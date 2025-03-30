@@ -4,18 +4,18 @@ import { MessagesRepository } from './messages.repository';
 
 @Injectable()
 export class MessagesService {
-  messagesRepo: MessagesRepository;
+  //   messagesRepo: MessagesRepository;
 
-  constructor() {
-    // service içinde repository oluşturuyoruz
-    // bu sayede service içinde repository'yi kullanabiliriz
-    // service is creating its own dependencies
-    // bir repo olmada servis doğru çalışmaz
-    // DONT DO THIS IN REAL APPS
-    this.messagesRepo = new MessagesRepository();
-  }
+  //   constructor() {
+  // service içinde repository oluşturuyoruz
+  // bu sayede service içinde repository'yi kullanabiliriz
+  // service is creating its own dependencies
+  // bir repo olmada servis doğru çalışmaz
+  // DONT DO THIS IN REAL APPS
+  //     this.messagesRepo = new MessagesRepository();
+  //   }
   //Dependency Injection: MessagesService sınıfı, MessagesRepository'ye bağımlıdır. Constructor sayesinde NestJS framework'ü otomatik olarak MessagesRepository'nin bir örneğini oluşturup MessagesService'e enjekte eder.
-
+  constructor(public messagesRepo: MessagesRepository) {}
   async findOne(id: string) {
     return this.messagesRepo.findOne(id);
   }

@@ -57,3 +57,43 @@ Class Validator: https://github.com/typestack/class-validator burada decorator l
 # Notes
 
 - Controller services'a, services repository'e bağımlı
+
+**Nest DI Container/Injector**
+
+```
+export class MessagesService {
+    messagesRepo: MessagesRepository;
+    constructor() {
+        this.messagesRepo = new MessagesRepository();
+    }
+}
+```
+
+List of classes and their dependencies
+MessagesService class'ı MessagesRepository'e bağımlı
+MessagesRepository class'ında bir bağımlılık yok
+
+List of instances that I have created
+messagesRepo ve messagesService -> messagesController instance
+
+Container şöyle diyecek: MessagesService'ı oluşturmadan önce MessagesRepository'i oluşturmak gerekiyor. Sonra MessagesRepository'e bakacak ve tamam bunu herhangi bir bağımlılığı yok. böylece doğrudan repoyu oluşturabiliriz. sonra bunu service'ı oluşturmak için kullanabiliriz. sonra bunu kullanarak depoyu oluşturabiliriz.
+
+Bunları DI COntainer hallediyor.
+
+DI Container Flow
+
+1. At startup, register all classes with the container
+2. Container will figure out what each dependency each class has
+3. We then ask the container to create an instance of a class for us
+4. Container creates all required dependencies and gives us the instance
+5. Container will hold onto the created dependency instances and reuse them if needed
+
+1 ve 2. maddede her sınıfta Injectable kullan ve bunları modules içerisine ekle
+3 ve 4. madde otomatik oalrak gerçekleşiyor. nest bizim için controller instance yaratıyor.
+
+@Injectable() decorator'ü, bir sınıfın NestJS'in dependency injection sistemine dahil edilebileceğini belirtir.
+Bu sayede NestJS, bu sınıfın instance'ını otomatik olarak oluşturabilir ve diğer sınıflara enjekte edebilir.
+Controller'lara @Injectable() EKLENMEZ. Onlar için @Controller() decorator'ü kullanılır.
+Module'lere @Injectable() EKLENMEZ. Onlar için @Module() decorator'ü kullanılır.
+@Injectable() sadece dependency injection sistemine dahil edilmesi gereken sınıflara eklenir.
+Genellikle bir sınıf başka bir servisi inject ediyorsa, kendisi de @Injectable() olmalıdır.
